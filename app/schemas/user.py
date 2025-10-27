@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator, EmailStr
+from pydantic import BaseModel, field_validator, EmailStr, ConfigDict
 from typing import Optional
 from app.models.user import UserRole
 import re
@@ -40,10 +40,9 @@ class UserOut(BaseModel):
     role: UserRole
     est_actif: bool
 
-    class Config:
-        orm_mode = True  # Pour permettre la conversion depuis les objets ORM
-
-
+    class Config:ConfigDict(
+        from_attributes = True
+    ) # Pour permettre la conversion depuis les objets ORM
 
 
 class ForgotPasswordRequest(BaseModel):
@@ -59,5 +58,11 @@ class ResetPasswordResponse(BaseModel):
 
     message: str
     success: bool
+
+# Pour la mis a jour de l'utilisateur.
+
+class UserUpdate(BaseModel):
+    nom: Optional[str]
+    prenom: Optional[str]
 
 
